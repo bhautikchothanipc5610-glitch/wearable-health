@@ -46,7 +46,10 @@ def send_sms_alert(message):
 app = Flask(__name__)
 CORS(app)
 
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///database.db"
+#app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///database.db"   #local database
+app.config["SQLALCHEMY_DATABASE_URI"] = "postgresql://wearable_health_db_user:DrgR0uhrkccdWXtTmAUj6RccspFyqQRH@dpg-d41obsc9c44c73a1kp2g-a.oregon-postgres.render.com/wearable_health_db"   
+                                            #render postgre sql cloud database
+                                            
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db = SQLAlchemy(app)
 

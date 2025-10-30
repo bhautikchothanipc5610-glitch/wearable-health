@@ -3,7 +3,9 @@ import time
 import random
 from datetime import datetime
 
-URL = "http://127.0.0.1:5000/api/data"
+  #URL = "http://127.0.0.1:5000/api/data"      #for localhoast
+
+URL = "https://wearable-health.onrender.com/api/data"
 
 def simulate():
     while True:

@@ -11,3 +11,11 @@ That updates your GitHub automatically.
 
 SMS work pending
 
+>>>>
+
+pip freeze > requirements.txt
+
+git add requirements.txt
+git commit -m "Add requirements.txt"
+git push
+

@@ -1,0 +1,120 @@
+:root {
+  --accent: #2563eb;
+  --accent-dark: #1e3a8a;
+  --muted: #6b7280;
+  --success: #10b981;
+  --warn: #f59e0b;
+  --danger: #ef4444;
+}
+
+body {
+  font-family: 'Poppins', 'Segoe UI', Arial, sans-serif;
+  background: #eef2f7;
+  margin: 0;
+  color: #0f172a;
+}
+
+header {
+  text-align: center;
+  background: linear-gradient(90deg, var(--accent) 0%, var(--accent-dark) 100%);
+  color: #fff;
+  padding: 18px 24px;
+  box-shadow: 0 6px 18px rgba(16,24,40,0.1);
+}
+
+header h1 { margin: 0; font-size: 28px; font-weight: 600; }
+
+.dashboard {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 20px;
+  width: 90%;
+  margin: 30px auto;
+}
+
+.card {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+}
+
+/* Chart */
+#healthChart {
+  max-height: 320px;
+}
+
+/* Gauge Section */
+#gaugeSection {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 30px;
+}
+.gauge-container {
+  position: relative;
+  width: 140px;
+  height: 140px;
+}
+.gauge-label {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 18px;
+  font-weight: 600;
+  color: #111827;
+}
+.gauge-title {
+  margin-top: 6px;
+  font-weight: 600;
+  color: #374151;
+}
+
+.download-btn {
+  background: linear-gradient(90deg,var(--accent),var(--accent-dark));
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  margin-top: 20px;
+  font-weight: 600;
+  box-shadow: 0 6px 14px rgba(37,99,235,0.2);
+  transition: transform 0.2s;
+}
+.download-btn:hover {
+  transform: scale(1.05);
+}
+
+/* Table */
+.table-card {
+  width: 92%;
+  margin: 30px auto;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+  padding: 20px;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+th, td {
+  padding: 10px;
+  text-align: center;
+}
+th {
+  background-color: var(--accent);
+  color: white;
+}
+tr:nth-child(even) {
+  background-color: #f9fafb;
+}
+
+@media (max-width: 900px) {
+  .dashboard {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,0 +1,9 @@
+Keep updating:
+When you make code changes locally, just run:
+
+git add .
+git commit -m "update dashboard"
+git push
+
+
+That updates your GitHub automatically.

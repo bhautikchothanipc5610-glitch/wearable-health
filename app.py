@@ -49,7 +49,7 @@ CORS(app)
 #app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///database.db"   #local database
 app.config["SQLALCHEMY_DATABASE_URI"] = "postgresql://wearable_health_db_user:DrgR0uhrkccdWXtTmAUj6RccspFyqQRH@dpg-d41obsc9c44c73a1kp2g-a.oregon-postgres.render.com/wearable_health_db"   
                                             #render postgre sql cloud database
-                                            
+
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db = SQLAlchemy(app)
 
@@ -183,4 +183,4 @@ def export_data():
 # Run App
 # -----------------------------
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(host="0.0.0.0", port=10000)

@@ -18,18 +18,14 @@
   </header>
 
   <div class="dashboard">
+    <!-- Heart Rate & HRV Chart -->
     <div class="card">
       <h3>Heart Rate & HRV</h3>
       <canvas id="healthChart"></canvas>
     </div>
 
+    <!-- Temperature Gauge Only -->
     <div class="card" id="gaugeSection">
-      <div class="gauge-container">
-        <canvas id="stressGauge"></canvas>
-        <div class="gauge-label" id="stressValue">--%</div>
-      </div>
-      <div class="gauge-title">🧠 Stress Level</div>
-
       <div class="gauge-container">
         <canvas id="tempGauge"></canvas>
         <div class="gauge-label" id="tempValue">-- °C</div>
@@ -42,6 +38,7 @@
     </div>
   </div>
 
+  <!-- Recent Data Table -->
   <div class="table-card">
     <h3>Recent Health Data</h3>
     <table id="data">

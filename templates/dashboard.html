@@ -1,58 +1,105 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <title>Wearable Health Dashboard</title>
+// ==========================
+// Frontend Dashboard Logic
+// ==========================
 
-  <!-- External Libraries -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+// Chart.js setup
+const ctx = document.getElementById('healthChart').getContext('2d');
+const healthChart = new Chart(ctx, {
+  type: 'line',
+  data: {
+    labels: [],
+    datasets: [
+      {
+        label: 'Heart Rate (BPM)',
+        borderColor: '#e74c3c',
+        fill: false,
+        data: [],
+      },
+      {
+        label: 'HRV (ms)',
+        borderColor: '#3498db',
+        fill: false,
+        data: [],
+      },
+    ],
+  },
+  options: {
+    responsive: true,
+    scales: {
+      x: { title: { display: true, text: 'Time' } },
+      y: { beginAtZero: true },
+    },
+  },
+});
 
-  <!-- Local Stylesheet -->
-  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-</head>
+// Temperature gauge setup
+const tempCtx = document.getElementById('tempGauge').getContext('2d');
+let tempGauge = new Chart(tempCtx, {
+  type: 'doughnut',
+  data: {
+    labels: ['Temp', ''],
+    datasets: [{
+      data: [0, 100],
+      backgroundColor: ['#f39c12', '#ecf0f1'],
+      borderWidth: 0
+    }]
+  },
+  options: {
+    rotation: -90,
+    circumference: 180,
+    cutout: '80%',
+    plugins: { legend: { display: false } }
+  }
+});
 
-<body>
-  <header>
-    <h1>Wearable Health Monitoring Dashboard</h1>
-  </header>
+function updateTempGauge(temp) {
+  document.getElementById('tempValue').innerText = `${temp.toFixed(1)} °C`;
+  tempGauge.data.datasets[0].data = [temp, 50 - temp / 2];
+  tempGauge.update();
+}
 
-  <div class="dashboard">
-    <!-- Heart Rate & HRV Chart -->
-    <div class="card">
-      <h3>Heart Rate & HRV</h3>
-      <canvas id="healthChart"></canvas>
-    </div>
+// ==========================
+// Fetch Data Function
+// ==========================
+async function fetchData() {
+  try {
+    const res = await fetch('/api/latest'); // <-- check this route matches your Flask route
+    const data = await res.json();
+    console.log('📥 Latest data:', data);
 
-    <!-- Temperature Gauge Only -->
-    <div class="card" id="gaugeSection">
-      <div class="gauge-container">
-        <canvas id="tempGauge"></canvas>
-        <div class="gauge-label" id="tempValue">-- °C</div>
-      </div>
-      <div class="gauge-title">🌡️ Body Temperature</div>
+    const time = new Date().toLocaleTimeString();
+    const heartRate = data.heart_rate;
+    const hrv = data.hrv;
+    const temp = data.temperature;
 
-      <button class="download-btn" onclick="window.location='/export'">
-        ⬇️ Download Health Data (CSV)
-      </button>
-    </div>
-  </div>
+    // Update Chart
+    healthChart.data.labels.push(time);
+    healthChart.data.datasets[0].data.push(heartRate);
+    healthChart.data.datasets[1].data.push(hrv);
+    if (healthChart.data.labels.length > 20) {
+      healthChart.data.labels.shift();
+      healthChart.data.datasets[0].data.shift();
+      healthChart.data.datasets[1].data.shift();
+    }
+    healthChart.update();
 
-  <!-- Recent Data Table -->
-  <div class="table-card">
-    <h3>Recent Health Data</h3>
-    <table id="data">
-      <tr>
-        <th>Time</th>
-        <th>Heart Rate</th>
-        <th>Temperature</th>
-        <th>HRV</th>
-        <th>Alert</th>
-      </tr>
-    </table>
-  </div>
+    // Update Temperature Gauge
+    updateTempGauge(temp);
 
-  <!-- Local JS -->
-  <script src="{{ url_for('static', filename='script.js') }}"></script>
-</body>
-</html>
+    // Update Table
+    const row = `<tr>
+      <td>${time}</td>
+      <td>${heartRate}</td>
+      <td>${temp.toFixed(1)}</td>
+      <td>${hrv}</td>
+      <td>${heartRate === 0 ? '⚠️ No Finger' : '✅ Normal'}</td>
+    </tr>`;
+    document.getElementById('data').insertAdjacentHTML('beforeend', row);
+  } catch (err) {
+    console.error('❌ Error fetching data:', err);
+  }
+}
+
+// Fetch every 2 seconds
+setInterval(fetchData, 2000);
+fetchData();
